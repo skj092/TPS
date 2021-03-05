@@ -134,3 +134,4 @@ models/
 
 # data and files
 *.csv
+*.pkl 

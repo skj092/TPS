@@ -37,7 +37,7 @@ def run(fold):
     x_valid = ohe.transform(df_valid[features])
     test = ohe.transform(test[features])
     
-    pickle.dump(test, open('./input/test_processed.pkl', 'wb'))
+    pickle.dump(test, open('../input/test_processed.pkl', 'wb'))
 
     model = linear_model.LogisticRegression()
     model.fit(x_train, df_train.target.values)
@@ -45,12 +45,15 @@ def run(fold):
     valid_pred = model.predict_proba(x_valid)[:,1]
     auc = metrics.roc_auc_score(df_valid.target.values, valid_pred)
 
-    print(f"Fold= {fold}, Auc = {auc}")
+    valid_label = model.predict(x_valid)
+    cm = metrics.confusion_matrix(df_valid.target.values, valid_label)
+
+    print(f"Fold= {fold}, Auc = {auc}, confusion_matrix = {cm}")
 
     # Saving the model
     joblib.dump(model, os.path.join(config.MODEL_OUTPUT, f"lr.bin"))
 
 
 if __name__ == "__main__":
-    # for fold in range(5):
-    run(1)
+    for fold in range(5):
+        run(fold)
