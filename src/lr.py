@@ -37,7 +37,7 @@ def run(fold):
     x_valid = ohe.transform(df_valid[features])
     test = ohe.transform(test[features])
     
-    pickle.dump(test, open('./test_processed.pkl', 'wb'))
+    pickle.dump(test, open('./input/test_processed.pkl', 'wb'))
 
     model = linear_model.LogisticRegression()
     model.fit(x_train, df_train.target.values)
